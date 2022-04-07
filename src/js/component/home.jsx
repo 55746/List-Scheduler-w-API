@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "../../styles/index.css";
 
 const Home = () => {
 	const [todolist, setTodolist] = useState([]);
@@ -12,9 +13,8 @@ const Home = () => {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify(newList),
-			redirct: "follow",
+			redirect: "follow",
 		})
-			// .then((response) => response.json())
 			.then((response) => {
 				response.status === 200 ? setTodolist(newList) : "";
 			})
@@ -35,34 +35,64 @@ const Home = () => {
 			})
 			.catch((error) => console.log("error", error));
 	}, []);
-
 	const deletes = (index) => {
 		const par = todolist.filter((list, i) => index !== i);
 		setTodolist(par);
+		fetch("https://assets.breatheco.de/apis/fake/todos/user/createdname", {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(par),
+			redirect: "follow",
+		})
+			.then((response) => {
+				response.status === 200 ? setTodolist(par) : "";
+			})
+			.catch((error) => console.log("error", error));
+	};
+	// const strike = (list) => {
+	// const par = todolist.crossedLine((list, i) => index !== i);
+	// const strikethrough = <strike>{list}</strike>;
+	// const strikethrough = setTodolist(strikethrough);
+	// 	fetch("https://assets.breatheco.de/apis/fake/todos/user/createdname", {
+	// 		method: "PUT",
+	// 		headers: {
+	// 			"Content-Type": "application/json",
+	// 		},
+	// 		body: JSON.stringify(strikethrough),
+	// 		redirect: "follow",
+	// 	})
+	// 		.then((response) => {
+	// 			response.status === 200 ? "crossedLine" : "";
+	// 		})
+	// 		.catch((error) => console.log("error", error));
+	// };
+	const completeTodo = (index) => {
+		const todosArray = [...todolist];
+		todosArray[index].done = !todosArray[index].done;
+		setItem(todosArray);
 	};
 	console.log(todolist);
 	return (
-		<>
-			<div>
-				<h1>Data</h1>
+		<div className="container">
+			<div className="container">
+				<h1>todos</h1>
 			</div>
 			<div className="input-group mb-3">
 				<div className="input-group-prepend">
 					<input
 						type="text"
 						className="form-control"
-						placeholder=""
+						placeholder="What needs to be done?"
 						onChange={(e) => setItem(e.target.value)}
-						value={item}
+						// value={item}
 					/>
 					<a
 						onClick={() => {
 							if (item === "")
 								return alert("you cant do that Jimbo");
-							// setTodolist([...todolist, item]);
-							// addItem(item);
-							// setItem("");
-							// console.log("updated");
+							setItem("");
 							addItem(item);
 						}}
 						type="btn btn-primary"
@@ -77,8 +107,20 @@ const Home = () => {
 					todolist.map((list, index) => {
 						return (
 							<li key={index} className="boxtype">
-								<div>{list.label}</div>
-								<div className="deletekey">
+								<span
+									className={list.done ? "crossedLine" : ""}>
+									{list.label}
+								</span>
+								<button
+									className="strikethrough"
+									onClick={() => completeTodo(index)}>
+									strikethrough button
+									{list.done}
+								</button>
+								{/* <button onClick={() => strike(index)}>
+									strikethrough
+								</button> */}
+								<span className="deletekey">
 									<a
 										className="deletekey btn "
 										onClick={() => {
@@ -86,22 +128,15 @@ const Home = () => {
 										}}>
 										X
 									</a>
-								</div>
+								</span>
 							</li>
 						);
 					})}
 			</ul>
 			<span>{todolist.length + " items"}</span>
 			<br></br>
-		</>
+		</div>
 	);
 };
 
 export default Home;
-
-// let requestOptions = {
-// 	method: "PUT",
-// 	// headers: myHeaders,
-// 	redirect: "follow",
-// 	body: raw,
-// };

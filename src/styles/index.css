@@ -1,12 +1,32 @@
-
-/* 
-
-    You can write your own styles here...
-    
-    
-    ...Or you can use the import command to include 
-    other sylesheets into your bunde as well, e.j:
-    
-    import 'relative/path/to/stylesheet.scss';
-
-*/
+.boxtype {
+    display: flex;
+    margin: auto;
+}
+.container{
+      border: 2px gray;
+    height: 50%;
+    width: 50%;
+    padding: 10px;
+    margin: auto;;
+}
+ul {
+    list-style-type: none;
+}
+.deletekey{
+    display: inline-block;
+    margin: auto;}
+    .input-group-text{
+        box-sizing: border-box;
+        display: inline-block;
+        position: absolute;
+        margin-left: 110px;
+    }
+    .form-control{
+        width: 495px;
+        display: inline-block;
+    }
+    /* .input-group{
+} */
+.crossedLine {
+    text-decoration: line-through;
+}
